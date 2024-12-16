@@ -1,6 +1,6 @@
 name: Build & Publish
 
-on: workflow_dispatch
+on: [push, workflow_dispatch]
 
 jobs:
   build:
@@ -51,8 +51,14 @@ jobs:
           chmod +x gradlew
           chmod +x v6-sdk-kt-proto/gradlew
 
+      - name: 切换目录
+        run: cd v6-sdk-kt-proto
+
       - name: 生成 Kotlin 文件
-        run: ./v6-sdk-kt-proto/gradlew generateProtos
+        run: gradlew generateProtos
+
+      - name: 切换目录
+        run: cd ../
 
       - name: 复制生成的 Kotlin 文件
         run: |
