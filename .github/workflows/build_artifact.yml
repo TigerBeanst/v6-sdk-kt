@@ -49,8 +49,8 @@ jobs:
       - name: 生成 Kotlin 文件
         run: |
           cd ./v6-sdk-kt-proto
-          chmod +x gradlew
-          gradlew generateProtos
+          chmod +x ./gradlew
+          ./gradlew generateProtos
 
       - name: 授予 gradlew 权限
         run: chmod +x ./gradlew
