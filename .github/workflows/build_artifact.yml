@@ -46,18 +46,15 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-      - name: 生成 Kotlin 文件
+      - name: 生成 Kotlin 文件 & 复制生成的 Kotlin 文件
         run: |
           cd ./v6-sdk-kt-proto
           chmod +x ./gradlew
           ./gradlew generateProtos
+          cp -r ./build/generated/source/wire/. ./src/main/kotlin/api
 
       - name: 授予 gradlew 权限
         run: chmod +x ./gradlew
-
-      - name: 复制生成的 Kotlin 文件
-        run: |
-          cp -r ./build/generated/source/wire/. ./src/main/kotlin/api
 
       - name: 发布 Gradle 包
         run: ./gradlew publish
