@@ -79,7 +79,7 @@ jobs:
           files: |
             ./v6.zip
 
-#      - name: 发布 Gradle 包
-#        run: ./gradlew publish
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 发布 Gradle 包
+        run: ./gradlew publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
