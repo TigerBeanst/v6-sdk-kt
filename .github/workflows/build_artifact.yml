@@ -59,7 +59,27 @@ jobs:
       - name: 授予 gradlew 权限
         run: chmod +x ./gradlew
 
-      - name: 发布 Gradle 包
-        run: ./gradlew publish
+
+      - name: 打包生成的 Kotlin 文件
+        run: |
+          zip -r ./v6.zip ./
+
+      - name: 生成 Release 版本号
+        id: tag
+        run: |
+          echo "::set-output name=release_tag::$(date +"%Y.%m.%d_%H-%M")"
+
+      - name: 创建 Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.tag.outputs.release_tag }}
+          files: |
+            ./v6.zip
+
+#      - name: 发布 Gradle 包
+#        run: ./gradlew publish
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
