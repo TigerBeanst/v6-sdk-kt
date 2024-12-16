@@ -1,0 +1,64 @@
+name: Build & Publish
+
+on: workflow_dispatch
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出本仓库
+        uses: actions/checkout@v4
+
+      - name: 检出 Proto 仓库
+        uses: actions/checkout@master
+        with:
+          repository: city404/v6-public-rpc-proto
+          path: ./v6-proto
+
+      - name: 检出打包 Proto 仓库
+        uses: actions/checkout@master
+        with:
+          repository: TigerBeanst/v6-sdk-kt-proto
+          path: ./v6-sdk-kt-proto
+
+      - name: 复制 Proto 文件
+        run: |
+          cp -r ./v6-proto/common ./v6-sdk-kt-proto/src/main/proto
+          cp -r ./v6-proto/offline/. ./v6-sdk-kt-proto/src/main/proto
+          cp -r ./v6-proto/rpcs/. ./v6-sdk-kt-proto/src/main/proto
+          cp -r ./v6-proto/sftp/. ./v6-sdk-kt-proto/src/main/proto
+          cp -r ./v6-proto/share/. ./v6-sdk-kt-proto/src/main/proto
+          cp -r ./v6-proto/slice/. ./v6-sdk-kt-proto/src/main/proto
+          cp -r ./v6-proto/user/. ./v6-sdk-kt-proto/src/main/proto
+          cp -r ./v6-proto/userfile/. ./v6-sdk-kt-proto/src/main/proto
+          cp -r ./v6-proto/webdav/. ./v6-sdk-kt-proto/src/main/proto
+          cp -r ./v6-proto/wrtc/. ./v6-sdk-kt-proto/src/main/proto
+          echo "=!!!========!!!=========!!!=======!!!=========!!!===="
+          ls -l ./v6-sdk-kt-proto/src/main/proto
+          echo "=!!!========!!!=========!!!=======!!!=========!!!===="
+
+      - name: 初始化 JDK 环境
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: 授予 gradlew 权限
+        run: |
+          chmod +x gradlew
+          chmod +x v6-sdk-kt-proto/gradlew
+
+      - name: 生成 Kotlin 文件
+        run: ./v6-sdk-kt-proto/gradlew generateProtos
+
+      - name: 复制生成的 Kotlin 文件
+        run: |
+          cp -r ./build/generated/source/wire/. ./src/main/kotlin/api
+
+      - name: 发布 Gradle 包
+        run: ./gradlew publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
