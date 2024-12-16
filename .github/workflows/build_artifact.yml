@@ -52,6 +52,9 @@ jobs:
           chmod +x ./gradlew
           ./gradlew generateProtos
           cp -r ./build/generated/source/wire/. ./src/main/kotlin/api
+          echo "=!!!========!!!=========!!!=======!!!=========!!!===="
+          ls -l ./src/main/kotlin/api
+          echo "=!!!========!!!=========!!!=======!!!=========!!!===="
 
       - name: 授予 gradlew 权限
         run: chmod +x ./gradlew
