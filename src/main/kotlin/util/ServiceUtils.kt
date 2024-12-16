@@ -1,9 +1,9 @@
 package fail.tiger.util
 
-import api.v6.services.pub.*
 import com.squareup.wire.GrpcClient
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
+import v6.services.pub.*
 
 lateinit var grpcClient: GrpcClient
 lateinit var PubUser: PubUserClient
