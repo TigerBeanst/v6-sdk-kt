@@ -53,7 +53,7 @@ jobs:
           ./gradlew generateProtos
           cp -r ./build/generated/source/wire/. ./../src/main/kotlin/api
           echo "=!!!========!!!=========!!!=======!!!=========!!!===="
-          ls -l ./src/main/kotlin/api
+          ls -l ./../src/main/kotlin/api
           echo "=!!!========!!!=========!!!=======!!!=========!!!===="
 
       - name: 授予 gradlew 权限
