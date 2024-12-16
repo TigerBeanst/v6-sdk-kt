@@ -52,7 +52,7 @@ jobs:
           chmod +x gradlew
 
       - name: 生成 Kotlin 文件
-        run: ./gradlew generateProtos
+        run: gradlew generateProtos
 
       - name: 切换目录
         run: |
