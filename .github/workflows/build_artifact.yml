@@ -46,19 +46,18 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-      - name: 授予 gradlew 权限
-        run: |
-          chmod +x gradlew
-          chmod +x v6-sdk-kt-proto/gradlew
-
       - name: 切换目录
-        run: cd v6-sdk-kt-proto
+        run: |
+          cd ./v6-sdk-kt-proto
+          chmod +x gradlew
 
       - name: 生成 Kotlin 文件
-        run: gradlew generateProtos
+        run: ./gradlew generateProtos
 
       - name: 切换目录
-        run: cd ../
+        run: |
+          cd ../
+          chmod +x gradlew
 
       - name: 复制生成的 Kotlin 文件
         run: |
